@@ -21,34 +21,10 @@ export async function POST(request: Request) {
       }
     }
 
-    // Send confirmation email to the customer
-    const customerEmail = await resend.emails.send({
-      from: "Happy Hour SF <onboarding@resend.dev>",
-      to: data.email,
-      subject: "We’re on it, finding the perfect fit for your team’s event",
-      html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <p style="font-size: 16px; line-height: 1.6; color: #333;">Hi there,</p>
-          
-          <p style="font-size: 16px; line-height: 1.6; color: #333;">Thanks for reaching out. I'm excited to help you find the right venue for your team's event.</p>
-          
-          <p style="font-size: 16px; line-height: 1.6; color: #333;">I'm already pulling together a short list of venues that fit your group size, budget, vibe, and timing. We work directly with great bars and restaurants, so we'll focus on places that are easy to book, team-friendly, and genuinely fun.</p>
-          
-          <p style="font-size: 16px; line-height: 1.6; color: #333;">You can expect a curated set of options shortly. Looking forward to helping you lock something great in.</p>
-          
-          <p style="font-size: 16px; line-height: 1.6; color: #333;">Best,</p>
-          
-          <p style="font-size: 16px; line-height: 1.6; color: #333; font-weight: 600;">Happy Hour SF</p>
-        </div>
-      `,
-    })
-
-    console.log("Customer email result:", customerEmail)
-
     // Send notification email to you with all answers
-    const adminEmail = await resend.emails.send({
+    await resend.emails.send({
       from: "Concierge <onboarding@resend.dev>",
-      to: "sfhappyhourhelp@gmail.com",
+      to: "johnm671@usc.edu",
       subject: `New Concierge Request from ${data.fullName} at ${data.companyName}`,
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -57,6 +33,11 @@ export async function POST(request: Request) {
           <div style="margin-bottom: 20px;">
             <p style="font-size: 14px; color: #666; margin: 0 0 4px 0; font-weight: 600;">Full name</p>
             <p style="font-size: 16px; color: #111; margin: 0;">${data.fullName}</p>
+          </div>
+          
+          <div style="margin-bottom: 20px;">
+            <p style="font-size: 14px; color: #666; margin: 0 0 4px 0; font-weight: 600;">Phone number</p>
+            <p style="font-size: 16px; color: #111; margin: 0;">${data.phoneNumber}</p>
           </div>
           
           <div style="margin-bottom: 20px;">
@@ -107,14 +88,12 @@ export async function POST(request: Request) {
       `,
     })
 
-    console.log("Admin email result:", adminEmail)
-
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("Error sending emails:", error)
+    console.error("Error sending email:", error)
     return NextResponse.json({ 
       success: false, 
-      error: error instanceof Error ? error.message : "Failed to send emails" 
+      error: error instanceof Error ? error.message : "Failed to send email" 
     }, { status: 500 })
   }
 }

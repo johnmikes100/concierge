@@ -20,6 +20,7 @@ type Answers = {
   amenities: string[]
   companyName: string
   fullName: string
+  phoneNumber: string
   email: string
 }
 
@@ -72,6 +73,11 @@ const questions = [
     type: "text" as const,
   },
   {
+    id: "phoneNumber",
+    question: "Phone number",
+    type: "tel" as const,
+  },
+  {
     id: "email",
     question: "Email address",
     subtext: "We will personally send you our suggestions ;)",
@@ -93,6 +99,7 @@ export default function HomePage() {
     roomType: "",
     amenities: [],
     companyName: "",
+    phoneNumber: "",
     fullName: "",
     email: "",
   })
@@ -212,7 +219,7 @@ export default function HomePage() {
         {!("subtext" in question) && <div className="mb-6" />}
 
         <div className="space-y-4">
-          {question.type === "text" || question.type === "email" ? (
+          {question.type === "text" || question.type === "email" || question.type === "tel" ? (
             <Input
               type={question.type}
               value={value as string}
